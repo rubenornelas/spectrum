@@ -35,8 +35,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button4 = new System.Windows.Forms.Button();
+            this.textBox_FileName = new System.Windows.Forms.TextBox();
+            this.button_AddColor = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -52,6 +52,9 @@
             this.label_smax = new System.Windows.Forms.Label();
             this.label_vmin = new System.Windows.Forms.Label();
             this.label_vmax = new System.Windows.Forms.Label();
+            this.label_hue = new System.Windows.Forms.Label();
+            this.label_hueValue = new System.Windows.Forms.Label();
+            this.colorSquare = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_smin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_smax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_vmin)).BeginInit();
@@ -60,9 +63,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(287, 21);
+            this.button1.Location = new System.Drawing.Point(287, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(75, 49);
             this.button1.TabIndex = 0;
             this.button1.Text = "BLOBS";
             this.button1.UseVisualStyleBackColor = true;
@@ -70,9 +73,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(206, 21);
+            this.button2.Location = new System.Drawing.Point(206, 12);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(75, 49);
             this.button2.TabIndex = 1;
             this.button2.Text = "REAL";
             this.button2.UseVisualStyleBackColor = true;
@@ -99,30 +102,30 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "FILE NAME:";
             // 
-            // textBox1
+            // textBox_FileName
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(135, 354);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(109, 23);
-            this.textBox1.TabIndex = 4;
+            this.textBox_FileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox_FileName.Location = new System.Drawing.Point(135, 354);
+            this.textBox_FileName.Name = "textBox_FileName";
+            this.textBox_FileName.Size = new System.Drawing.Size(109, 23);
+            this.textBox_FileName.TabIndex = 4;
             // 
-            // button4
+            // button_AddColor
             // 
-            this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(154, 383);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "ADD Colour";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button_AddColor.Enabled = false;
+            this.button_AddColor.Location = new System.Drawing.Point(154, 383);
+            this.button_AddColor.Name = "button_AddColor";
+            this.button_AddColor.Size = new System.Drawing.Size(75, 36);
+            this.button_AddColor.TabIndex = 5;
+            this.button_AddColor.Text = "ADD COLOR";
+            this.button_AddColor.UseVisualStyleBackColor = true;
+            this.button_AddColor.Click += new System.EventHandler(this.button_AddColor_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(176, 409);
+            this.label2.Location = new System.Drawing.Point(179, 425);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(28, 17);
             this.label2.TabIndex = 6;
@@ -134,7 +137,7 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(90, 41);
             this.button5.TabIndex = 7;
-            this.button5.Text = "BACK";
+            this.button5.Text = "CANCEL";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -257,11 +260,49 @@
             this.label_vmax.TabIndex = 23;
             this.label_vmax.Text = "0";
             // 
+            // label_hue
+            // 
+            this.label_hue.AutoSize = true;
+            this.label_hue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_hue.Location = new System.Drawing.Point(269, 334);
+            this.label_hue.Name = "label_hue";
+            this.label_hue.Size = new System.Drawing.Size(41, 17);
+            this.label_hue.TabIndex = 24;
+            this.label_hue.Text = "HUE:";
+            // 
+            // label_hueValue
+            // 
+            this.label_hueValue.AutoSize = true;
+            this.label_hueValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_hueValue.Location = new System.Drawing.Point(269, 355);
+            this.label_hueValue.Name = "label_hueValue";
+            this.label_hueValue.Size = new System.Drawing.Size(98, 16);
+            this.label_hueValue.TabIndex = 25;
+            this.label_hueValue.Text = "PICK A COLOR";
+            // 
+            // colorSquare
+            // 
+            this.colorSquare.AutoSize = true;
+            this.colorSquare.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.colorSquare.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.colorSquare.Location = new System.Drawing.Point(51, 350);
+            this.colorSquare.Margin = new System.Windows.Forms.Padding(0);
+            this.colorSquare.MaximumSize = new System.Drawing.Size(30, 30);
+            this.colorSquare.MinimumSize = new System.Drawing.Size(30, 30);
+            this.colorSquare.Name = "colorSquare";
+            this.colorSquare.Size = new System.Drawing.Size(30, 30);
+            this.colorSquare.TabIndex = 26;
+            this.colorSquare.Text = "NC";
+            this.colorSquare.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 461);
+            this.Controls.Add(this.colorSquare);
+            this.Controls.Add(this.label_hueValue);
+            this.Controls.Add(this.label_hue);
             this.Controls.Add(this.label_vmax);
             this.Controls.Add(this.label_vmin);
             this.Controls.Add(this.label_smax);
@@ -276,14 +317,14 @@
             this.Controls.Add(this.trackBar_smin);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.button_AddColor);
+            this.Controls.Add(this.textBox_FileName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Form4";
-            this.Text = "Form4";
+            this.Text = "Color Calibration";
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_smin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_smax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_vmin)).EndInit();
@@ -299,8 +340,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox textBox_FileName;
+        private System.Windows.Forms.Button button_AddColor;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Timer timer1;
@@ -316,5 +357,8 @@
         private System.Windows.Forms.Label label_smax;
         private System.Windows.Forms.Label label_vmin;
         private System.Windows.Forms.Label label_vmax;
+        private System.Windows.Forms.Label label_hue;
+        private System.Windows.Forms.Label label_hueValue;
+        private System.Windows.Forms.Label colorSquare;
     }
 }

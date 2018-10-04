@@ -17,25 +17,37 @@ namespace CTPro
         private Window srcWindow, dstWindow;
         private Main main;
         private const int CP_NOCLOSE_BUTTON = 0x200;
-        CvTrackbar trackbarE;
 
         public Form3()
         {
             InitializeComponent();
             main = new Main();
-            cam = new VideoCapture(Form1.GetCamera());
+            cam = new VideoCapture(FormMain.GetCamera());
             cam.Set(CaptureProperty.FrameWidth, CamCalibration.GetResolution()[0]);
             cam.Set(CaptureProperty.FrameHeight, CamCalibration.GetResolution()[1]);
-            Main.FillColorList();
+            Main.FillColorList(Main.colorCalibrationPath);
             srcWindow = new Window("Main Window");
             dstWindow = new Window("Blob Window");
-            trackbarE = new CvTrackbar("Morph Value", dstWindow.Name, 3, 21, main.OnNewTrackbarValueE, null);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            srcWindow.Move(300, 0);
+            Main.MorphValue = 7;
+            trackBar_morph.Value = 7;
+            labelCurrentIP.Text = "IP: " + Main.IP_udp;
+            labelCurrentPort.Text = "PORT: " + Main.Port_udp;
+            areaResult_min.Text = Main.MinBlobArea.ToString();
+            areaResult_max.Text = Main.MaxBlobArea.ToString();
+            label_calCam.Text = Main.CameraFileName;
+            label_calColor.Text = Main.ColorFileName;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            main.MainLoop(cam, srcWindow, dstWindow);
+            main.SpectrumTrack(cam, srcWindow, dstWindow);
+            if(trackBar_morph.Value != Main.MorphValue)
+            {
+                Main.MorphValue = trackBar_morph.Value;
+                label_morphValue.Text = "MORPH VALUE: " + Main.MorphValue;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -47,27 +59,25 @@ namespace CTPro
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Main.SetReal(true);
+            Main.SetRealView(true);
             srcWindow = new Window("Main Window");
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Main.SetBlob(false);
+            Main.SetBlobView(false);
             Cv2.DestroyWindow(dstWindow.Name);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Main.SetBlob(true);
+            Main.SetBlobView(true);
             dstWindow = new Window("Blob Window");
-            trackbarE = new CvTrackbar("Morph Value", dstWindow.Name, 3, 21, main.OnNewTrackbarValueE, null);
-
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Main.SetReal(false);
+            Main.SetRealView(false);
             Cv2.DestroyWindow(srcWindow.Name);            
         }
 

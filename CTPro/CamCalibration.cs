@@ -12,20 +12,30 @@ namespace CTPro
     {
         private static Point point1, point2, point3, point4;
         private Mat src;
-        private int thePoint;
+        private int currentPoint;
         private bool rectangleCreated;
         private static string path;
         private static int theWidth, theHeight, frameWidth, frameHeight;
 
         public CamCalibration()
         {
-            thePoint = 1;
+            currentPoint = 1;
         }
 
         public static void SetFrameSize(int width, int height)
         {
             frameWidth = width;
             frameHeight = height;
+        }
+
+        public int GetCurrentPoint()
+        {
+            return currentPoint;
+        }
+
+        public void SetCurrentPoint(int _currentPoint)
+        {
+            currentPoint = _currentPoint;
         }
 
         public static int[] GetFrameArray()
@@ -53,32 +63,49 @@ namespace CTPro
             }
         }
 
+        /// <summary>
+        /// Camera calibration main function.
+        /// </summary>
+        /// <param name="cam_test">Camera beeing used.</param>
+        /// <param name="calWindow">Display window.</param>
         public void CropLoop(VideoCapture cam_test, Window calWindow)
         {
             src = cam_test.RetrieveMat(); //Real image of the camera
             Cv2.Resize(src, src, new Size(frameWidth, frameHeight), 1, 1, InterpolationFlags.Cubic);
 
+            if (point1.X != 0 && point2.X != 0)
+                Cv2.Line(src, point1, point2, new Scalar(255, 0, 0), 1, LineTypes.AntiAlias);
+            if (point2.X != 0 && point3.X != 0)
+                Cv2.Line(src, point2, point3, new Scalar(255, 0, 0), 1, LineTypes.AntiAlias);
+            if (point3.X != 0 && point4.X != 0)
+                Cv2.Line(src, point3, point4, new Scalar(255, 0, 0), 1, LineTypes.AntiAlias);
+            if (point4.X != 0 && point1.X != 0)
+                Cv2.Line(src, point4, point1, new Scalar(255, 0, 0), 1, LineTypes.AntiAlias);
+
             if (point1.X != 0)
             {
-                Cv2.Circle(src, point1, 2, new Scalar(250, 0, 0), 5, LineTypes.AntiAlias);
+                Cv2.Circle(src, point1, 2, new Scalar(250, 0, 0), 3, LineTypes.AntiAlias);
+                Cv2.Circle(src, point1, 10, new Scalar(0, 0, 255), 1, LineTypes.AntiAlias);
             }
             if (point2.X != 0)
             {
-                Cv2.Circle(src, point2, 2, new Scalar(250, 0, 0), 5, LineTypes.AntiAlias);
-                Cv2.Line(src, point1, point2, new Scalar(250, 0, 0), 2, LineTypes.AntiAlias);
+                Cv2.Circle(src, point2, 2, new Scalar(250, 0, 0), 3, LineTypes.AntiAlias);
+                Cv2.Circle(src, point2, 10, new Scalar(0, 255, 0), 1, LineTypes.AntiAlias);
             }
             if (point3.X != 0)
             {
-                Cv2.Circle(src, point3, 2, new Scalar(250, 0, 0), 5, LineTypes.AntiAlias);
-                Cv2.Line(src, point2, point3, new Scalar(250, 0, 0), 2, LineTypes.AntiAlias);
+                Cv2.Circle(src, point3, 2, new Scalar(250, 0, 0), 3, LineTypes.AntiAlias);
+                Cv2.Circle(src, point3, 10, new Scalar(255, 255, 0), 1, LineTypes.AntiAlias);
             }
             if (point4.X != 0)
             {
-                Cv2.Circle(src, point4, 2, new Scalar(250, 0, 0), 5, LineTypes.AntiAlias);
-                Cv2.Line(src, point3, point4, new Scalar(250, 0, 0), 2, LineTypes.AntiAlias);
-                Cv2.Line(src, point4, point1, new Scalar(250, 0, 0), 2, LineTypes.AntiAlias);
+                Cv2.Circle(src, point4, 2, new Scalar(250, 0, 0), 3, LineTypes.AntiAlias);
+                Cv2.Circle(src, point4, 10, new Scalar(0, 255, 255), 1, LineTypes.AntiAlias);
                 rectangleCreated = true;
             }
+
+            if (point1.X != 0 && point2.X != 0 && point3.X != 0 && point4.X != 0)
+                rectangleCreated = true;
 
             Cv2.ImShow(calWindow.Name, src);
 
@@ -134,11 +161,6 @@ namespace CTPro
             point4 = new Point(0, 0);
         }
 
-        public static Point GetPoint1()
-        {
-            return point1;
-        }
-
         public static Point2f[] GetROIPoints()
         {
             Point2f[] pts = new Point2f[]
@@ -162,6 +184,10 @@ namespace CTPro
             return df32;
         }
 
+        /// <summary>
+        /// Width needed to set Cv2.WarpPerspective.
+        /// </summary>
+        /// <returns>Final width based on crop points.</returns>
         public static int GetMaxWidth()
         {
             int widthA = point2.X - point1.X;
@@ -170,6 +196,10 @@ namespace CTPro
             return Math.Max(widthA, widthB);
         }
 
+        /// <summary>
+        /// Height needed to set Cv2.WarpPerspective.
+        /// </summary>
+        /// <returns>Final height based on crop points.</returns>
         public static int GetMaxHeight()
         {
             int heightA = point4.Y - point1.Y;
@@ -178,30 +208,38 @@ namespace CTPro
             return Math.Max(heightA, heightB);
         }
 
+        /// <summary>
+        /// Mouse click handler.
+        /// Gets the points position needed to crop the image.
+        /// </summary>
+        /// <param name="me">Mouse event.</param>
+        /// <param name="x">Mouse's X position.</param>
+        /// <param name="y">Mouse's Y position.</param>
+        /// <param name="flags">Flaggs.</param>
         public void Click(MouseEvent me, int x, int y, MouseEvent flags)
         {
             if (me == MouseEvent.LButtonDown)
             {
-                switch (thePoint)
+                switch (currentPoint)
                 {
                     case 1:
                         point1 = new Point(x, y);
-                        thePoint = 2;
+                        currentPoint = 2;
                         break;
 
                     case 2:
                         point2 = new Point(x, y);
-                        thePoint = 3;
+                        currentPoint = 3;
                         break;
 
                     case 3:
                         point3 = new Point(x, y);
-                        thePoint = 4;
+                        currentPoint = 4;
                         break;
 
                     case 4:
                         point4 = new Point(x, y);
-                        thePoint = 1;
+                        currentPoint = 1;
                         break;
                 }
             }

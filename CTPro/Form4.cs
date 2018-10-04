@@ -24,9 +24,9 @@ namespace CTPro
         {
             InitializeComponent();
             colourCalibration = new ColourCalibration();
-            colourWindow = new Window("Colour Calibration Window");
+            colourWindow = new Window("Color Calibration Window");
             Cv2.SetMouseCallback(colourWindow.Name, colourCalibration.ColourPicker);
-            cam = new VideoCapture(Form1.GetCamera());
+            cam = new VideoCapture(FormMain.GetCamera());
             cam.Set(CaptureProperty.FrameWidth, CamCalibration.GetResolution()[0]);
             cam.Set(CaptureProperty.FrameHeight, CamCalibration.GetResolution()[1]);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -37,18 +37,43 @@ namespace CTPro
             colourWindow.Move(400, 0);
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void button_AddColor_Click(object sender, EventArgs e)
         {
-            if (colourCalibration.GetAddNewColour())
+            if (colourCalibration.AddNewColour)
             {
                 colourCalibration.AddColour();
                 button3.Enabled = true;
             }
             label2.Text = "# " + colourCalibration.GetColoursAdded();
+            colourCalibration.AddNewColour = false;
+            colourCalibration.Hue = -1;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+
+            if (colourCalibration.AddNewColour)
+            {
+                colorSquare.Text = "";
+                colorSquare.BackColor = colourCalibration.GetNewColor();
+            }
+            else
+            {
+                colorSquare.Text = "NC";
+                colorSquare.BackColor = Color.Transparent;
+            }
+
+            if (colourCalibration.Hue == -1)
+            {
+                label_hueValue.Text = "PICK A COLOR";
+                label_hueValue.Font = new Font(label_hueValue.Font, FontStyle.Underline);
+            }
+            else
+            {
+                label_hueValue.Text = colourCalibration.Hue.ToString();
+                label_hueValue.Font = new Font(label_hueValue.Font, FontStyle.Regular);
+            }
+
             if(current_smin != trackBar_smin.Value)
             {
                 current_smin = trackBar_smin.Value;
@@ -74,26 +99,25 @@ namespace CTPro
                 label_vmax.Text = current_vmax.ToString();
             }
 
-            if(textBox1.Text != "")
+            if(textBox_FileName.Text != "")
             {
-                colourCalibration.SetPath(textBox1.Text);
+                colourCalibration.SetPath(textBox_FileName.Text);
                 if (!File.Exists(colourCalibration.GetPath()))
                 {
-                    textBox1.BackColor = Color.LightGreen;
-                    if (colourCalibration.GetAddNewColour())
-                    {
-                        button4.Enabled = true;
-                        button4.BackColor = colourCalibration.GetNewColor();
-                    }
+                    textBox_FileName.BackColor = Color.LightGreen;
+                    if (colourCalibration.AddNewColour)
+                        button_AddColor.Enabled = true;
+                    else
+                        button_AddColor.Enabled = false;
                 }
                 else
                 {
-                    textBox1.BackColor = Color.IndianRed;
+                    textBox_FileName.BackColor = Color.IndianRed;
                 }
             }
             else
             {
-                textBox1.BackColor = Color.IndianRed;
+                textBox_FileName.BackColor = Color.IndianRed;
             }
 
             colourCalibration.ColourLoop(cam, colourWindow);
@@ -101,12 +125,12 @@ namespace CTPro
 
         private void button2_Click(object sender, EventArgs e)
         {
-            colourCalibration.SetTab(false);
+            colourCalibration.SetBlobView(false);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            colourCalibration.SetTab(true);
+            colourCalibration.SetBlobView(true);
         }
 
         private void button5_Click(object sender, EventArgs e)

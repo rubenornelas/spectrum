@@ -11,19 +11,23 @@ namespace CTPro
     class ColourCalibration
     {
         private Point colourPoint;
-        private bool colourPicked, addNewColour, tab;
+        private bool blobView, colourPicked;
         private int coloursAdded, elementSm, elementSM, elementVm, elementVM;
         private string path;
         private static string thePath;
         private List<string> coloursToBeSaved;
         private Mat HSV, RGB, src;
-        private Vec3b hsv, color;
-        private Scalar newColour;
+        private Vec3b hsv, rgb;
+        private Scalar newColor_hsv, newColor_rgb;
+
+        public bool AddNewColour { get; set; }
+        public int Hue { get; set; }
 
         public ColourCalibration()
         {
             coloursToBeSaved = new List<string>();
-            newColour = new Scalar(0, 0, 0);
+            newColor_hsv = new Scalar(0, 0, 0);
+            Hue = -1;
         }
 
         public void ColourLoop(VideoCapture cam_test, Window colourWindow)
@@ -31,22 +35,27 @@ namespace CTPro
             src = cam_test.RetrieveMat();
             Cv2.Resize(src, src, new Size(CamCalibration.GetFrameArray()[0], CamCalibration.GetFrameArray()[1]), 1, 1, InterpolationFlags.Cubic);
 
-            color = src.At<Vec3b>(colourPoint.Y, colourPoint.X);
-
-            HSV = new Mat();
-            RGB = new Mat(src, new Rect(colourPoint.X, colourPoint.Y, 1, 1));
-            Cv2.CvtColor(RGB, HSV, ColorConversionCodes.BGR2HSV);
-
-            hsv = HSV.At<Vec3b>(0, 0);
-
             if (colourPicked)
             {
-                newColour = new Scalar(hsv[0], hsv[1], hsv[2]);
+                HSV = new Mat();
+                RGB = new Mat(src, new Rect(colourPoint.X, colourPoint.Y, 1, 1));
+
+                Cv2.CvtColor(RGB, HSV, ColorConversionCodes.BGR2HSV);
+                hsv = HSV.At<Vec3b>(0, 0);
+                newColor_hsv = new Scalar(hsv[0], hsv[1], hsv[2]);
+                Hue = hsv[0];
+
+                rgb = RGB.At<Vec3b>(0, 0);
+                newColor_rgb = new Scalar(rgb[0], rgb[1], rgb[2]);
+
                 colourPicked = false;
-                addNewColour = true;
+                AddNewColour = true;
+
+                HSV.Dispose();
+                RGB.Dispose();
             }
 
-            if (tab)
+            if (blobView)
             {
                 Cv2.Blur(src, src, new Size(3, 3));
                 Cv2.CvtColor(src, src, ColorConversionCodes.BGR2HSV);
@@ -58,8 +67,6 @@ namespace CTPro
             Cv2.WaitKey(1);
 
             src.Dispose();
-            HSV.Dispose();
-            RGB.Dispose();
         }
 
         public void AddColour()
@@ -81,26 +88,20 @@ namespace CTPro
 
         public void SetPath(string nameFile)
         {
-            //path = @"C:\Users\Samsung\Desktop\CTracking\CTPro\ColourFiles\" + nameFile + ".txt";
             path = Path.Combine(Environment.CurrentDirectory, @"ColourFiles\", nameFile + ".txt");
             thePath = path;
         }
 
-        public void SetTab(bool result)
+        public void SetBlobView(bool result)
         {
-            tab = result;
-        }
-
-        public bool GetAddNewColour()
-        {
-            return addNewColour;
+            blobView = result;
         }
 
         public System.Drawing.Color GetNewColor()
         {
             System.Drawing.Color outColor = new System.Drawing.Color();
-            outColor = System.Drawing.Color.FromArgb(int.Parse(newColour.Val0.ToString()),
-                int.Parse(newColour.Val1.ToString()), int.Parse(newColour.Val2.ToString()));
+            outColor = System.Drawing.Color.FromArgb(int.Parse(newColor_rgb.Val2.ToString()),
+                int.Parse(newColor_rgb.Val1.ToString()), int.Parse(newColor_rgb.Val0.ToString()));
             return outColor;
         }
 
