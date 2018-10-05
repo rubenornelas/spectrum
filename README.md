@@ -1,4 +1,4 @@
-# colortrack
+# Spectrum Track
 ## Color and Shape tracking with OpenCVSharp and WinForms
 This software was created using OpenCvSharp, an OpenCv C# wrapper, and WinForms from .Net framework. In a basic way, what it does is detect the BLOBs, gather their data and send it through UDP. To have a better understanding of what it’s happening here it’s important to get familiar with what is a BLOB and how we get it.
 
