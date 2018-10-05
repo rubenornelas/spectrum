@@ -33,7 +33,7 @@ As mentioned before, all the data gather from BLOBs is sent through UDP. In tota
 1. This software works with colours, which means that the better the quality of stream, better the detection. So, make sure you take your time adjusting the filters of the camera to get a clean and sharp image with bright colours.
 1. Before starting the colour calibration process, make sure it is in the same environment this software will be used on. Changing places or just changing lights may modify the HSV values perceive by the camera, destroying the detection. However, there’s a big chance it can be fixed by simply working with the camera filter.
 1. Shadows are an issue. This is something that may be solved in future versions without you even noticing, but for now, having a shadow over an object colour will change his HSV values which means the software won’t detect it. There are two possible solutions:
-   1. When calibrating the colours, check if the colour is being detected with the shadow over it, if not try moving both value and saturation bars till it detects it properly.
+   1. When calibrating the colours, check if the colour is being detected with and without the shadow over it, if not try moving both value and saturation bars till it detects it properly.
    1. If the previous step doesn’t work, add to the list of detections the same colour with the shadow over it.
 1. Constant and correct detection of shapes may be hard to achieve because of BLOB changes that may be caused by illumination variations. To improve detection, it’s essential that the object’s shape is properly defined. On top of that, point 1 of this section is very important.
 
