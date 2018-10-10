@@ -536,7 +536,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button3);
             this.Name = "FormMain";
-            this.Text = "Spectrum Detectio";
+            this.Text = "Spectrum";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();

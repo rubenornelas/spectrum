@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CTPro.exe" size="64976">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CTPro.exe" size="65488">
       <assemblyIdentity name="CTPro" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>b+dxBJXi3mDecarVU/U4Tsg/r4GlrGoHs+sp+EfZKyI=</dsig:DigestValue>
+        <dsig:DigestValue>cAnJlw9sVVYcdtaWbjPy/0D1uYpIExELjw+0CCyw/SM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

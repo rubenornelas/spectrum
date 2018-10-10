@@ -54,13 +54,14 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.areaResult_max = new System.Windows.Forms.Label();
+            this.checkBox_blobsLabel = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_morph)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(100, 349);
+            this.button1.Location = new System.Drawing.Point(100, 394);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(103, 39);
             this.button1.TabIndex = 0;
@@ -125,7 +126,7 @@
             // 
             // trackBar_morph
             // 
-            this.trackBar_morph.Location = new System.Drawing.Point(2, 301);
+            this.trackBar_morph.Location = new System.Drawing.Point(2, 346);
             this.trackBar_morph.Maximum = 21;
             this.trackBar_morph.Name = "trackBar_morph";
             this.trackBar_morph.Size = new System.Drawing.Size(304, 45);
@@ -135,7 +136,7 @@
             // 
             this.label_morphValue.AutoSize = true;
             this.label_morphValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_morphValue.Location = new System.Drawing.Point(11, 280);
+            this.label_morphValue.Location = new System.Drawing.Point(11, 325);
             this.label_morphValue.Name = "label_morphValue";
             this.label_morphValue.Size = new System.Drawing.Size(132, 18);
             this.label_morphValue.TabIndex = 10;
@@ -147,7 +148,7 @@
             this.labelCurrentPort.AutoSize = true;
             this.labelCurrentPort.BackColor = System.Drawing.Color.Transparent;
             this.labelCurrentPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCurrentPort.Location = new System.Drawing.Point(8, 427);
+            this.labelCurrentPort.Location = new System.Drawing.Point(8, 475);
             this.labelCurrentPort.Name = "labelCurrentPort";
             this.labelCurrentPort.Size = new System.Drawing.Size(54, 18);
             this.labelCurrentPort.TabIndex = 23;
@@ -159,7 +160,7 @@
             this.labelCurrentIP.AutoSize = true;
             this.labelCurrentIP.BackColor = System.Drawing.Color.Transparent;
             this.labelCurrentIP.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCurrentIP.Location = new System.Drawing.Point(8, 402);
+            this.labelCurrentIP.Location = new System.Drawing.Point(8, 450);
             this.labelCurrentIP.Name = "labelCurrentIP";
             this.labelCurrentIP.Size = new System.Drawing.Size(25, 18);
             this.labelCurrentIP.TabIndex = 22;
@@ -279,11 +280,23 @@
             this.areaResult_max.TabIndex = 35;
             this.areaResult_max.Text = "50000";
             // 
+            // checkBox_blobsLabel
+            // 
+            this.checkBox_blobsLabel.AutoSize = true;
+            this.checkBox_blobsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_blobsLabel.Location = new System.Drawing.Point(166, 288);
+            this.checkBox_blobsLabel.Name = "checkBox_blobsLabel";
+            this.checkBox_blobsLabel.Size = new System.Drawing.Size(124, 22);
+            this.checkBox_blobsLabel.TabIndex = 36;
+            this.checkBox_blobsLabel.Text = "BLOBs LABEL";
+            this.checkBox_blobsLabel.UseVisualStyleBackColor = true;
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(305, 450);
+            this.ClientSize = new System.Drawing.Size(305, 498);
+            this.Controls.Add(this.checkBox_blobsLabel);
             this.Controls.Add(this.areaResult_max);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -307,7 +320,7 @@
             this.Controls.Add(this.button1);
             this.Name = "Form3";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Text = "Detectio";
+            this.Text = "Detection";
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_morph)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -338,5 +351,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label areaResult_max;
+        private System.Windows.Forms.CheckBox checkBox_blobsLabel;
     }
 }

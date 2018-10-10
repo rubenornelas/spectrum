@@ -31,6 +31,7 @@ namespace CTPro
             FormBorderStyle = FormBorderStyle.FixedSingle;
             srcWindow.Move(300, 0);
             Main.MorphValue = 7;
+            label_morphValue.Text = "MORPH VALUE: " + Main.MorphValue;
             trackBar_morph.Value = 7;
             labelCurrentIP.Text = "IP: " + Main.IP_udp;
             labelCurrentPort.Text = "PORT: " + Main.Port_udp;
@@ -38,11 +39,14 @@ namespace CTPro
             areaResult_max.Text = Main.MaxBlobArea.ToString();
             label_calCam.Text = Main.CameraFileName;
             label_calColor.Text = Main.ColorFileName;
+            checkBox_blobsLabel.Checked = true;
+            Main.BlobLabel = true;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             main.SpectrumTrack(cam, srcWindow, dstWindow);
+            Main.BlobLabel = checkBox_blobsLabel.Checked;
             if(trackBar_morph.Value != Main.MorphValue)
             {
                 Main.MorphValue = trackBar_morph.Value;

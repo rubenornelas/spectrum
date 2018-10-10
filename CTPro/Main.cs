@@ -30,24 +30,20 @@ namespace CTPro
         private static string udpDatagram_3 = "";
         private static string udpDatagram_4 = "";
         private static string udpDatagram_5 = "";
-        private static string deviceName = "ctpro";
+        private static string udpDatagram_6 = "";
+        private static string deviceName = "spectrum";
         private static long data_id = DateTime.Now.Ticks;
 
         public static string colorCalibrationPath;
 
         public static string IP_udp { get; set; }
-
         public static int Port_udp { get; set; }
-
         public static int MorphValue { get; set; }
-
         public static int MinBlobArea { get; set; }
-
         public static int MaxBlobArea { get; set; }
-
         public static string ColorFileName { get; set; }
-
         public static string CameraFileName { get; set; }
+        public static bool BlobLabel { get; set; }
 
         public Dictionary<string, Scalar> colorLabels;
 
@@ -101,7 +97,7 @@ namespace CTPro
         }
 
         /// <summary>
-        /// Tracking function.
+        /// Detection function.
         /// Applies camera correction and then starts <see cref="Renderer(Mat)"/> function.
         /// </summary>
         /// <param name="cam_test"></param>
@@ -233,7 +229,9 @@ namespace CTPro
                                     break;
                                 case 4:
                                     Rect rect = Cv2.BoundingRect(poly);
-                                    float aspectRatio = rect.X / rect.Y;
+                                    float aspectRatio = 0;
+                                    if (rect.Y != 0)
+                                        aspectRatio = rect.X / rect.Y;
                                     if (aspectRatio >= 0.95 && aspectRatio <= 1.05)
                                         geometry = "square";
                                     else
@@ -244,8 +242,14 @@ namespace CTPro
                                     break;
                             }
                             udpDatagram_5 += geometry + ";";
-                            Cv2.PutText(src, geometry, blobDetection[processKey].Centroid, HersheyFonts.HersheySimplex, 0.5, new Scalar(0, 255, 0), 2);
-                            Cv2.PutText(src, "[" + scal[0] + ", " + ((scal[1] + scal[2])/2) + ", " + ((scal[3] + scal[4])/2) + "]" , new Point(blobDetection[processKey].Centroid.X, blobDetection[processKey].Centroid.Y + 20), HersheyFonts.HersheySimplex, 0.45, new Scalar(0, 255, 0), 2);
+                            if (BlobLabel)
+                            {
+                                Cv2.PutText(src, geometry, blobDetection[processKey].Centroid, HersheyFonts.HersheySimplex, 0.5, new Scalar(0, 255, 0), 2);
+                                Cv2.PutText(src, "[" + scal[0] + ", " + ((scal[1] + scal[2]) / 2) + ", " + ((scal[3] + scal[4]) / 2) + "]", new Point(blobDetection[processKey].Centroid.X, blobDetection[processKey].Centroid.Y + 20), HersheyFonts.HersheySimplex, 0.45, new Scalar(0, 255, 0), 2);
+                            }
+                            udpDatagram_6 = "[$]tracking|id=" + data_id + "|label=" + blobCount + "|[$$]" + deviceName + ",[$$$]perimeter,value,";
+                            udpDatagram_6 += blobDetection[processKey].Contour.Perimeter().ToString().Replace(',', '.') + ";";
+
                             // UDP sender---------------------------------------------------------------------
                             try
                             {
@@ -254,11 +258,13 @@ namespace CTPro
                                 byte[] sendBytes_3 = Encoding.ASCII.GetBytes(udpDatagram_3);
                                 byte[] sendBytes_4 = Encoding.ASCII.GetBytes(udpDatagram_4);
                                 byte[] sendBytes_5 = Encoding.ASCII.GetBytes(udpDatagram_5);
+                                byte[] sendBytes_6 = Encoding.ASCII.GetBytes(udpDatagram_6);
                                 udpClient.Send(sendBytes_1, sendBytes_1.Length, IP_udp, Port_udp);
                                 udpClient.Send(sendBytes_2, sendBytes_2.Length, IP_udp, Port_udp);
                                 udpClient.Send(sendBytes_3, sendBytes_3.Length, IP_udp, Port_udp);
                                 udpClient.Send(sendBytes_4, sendBytes_4.Length, IP_udp, Port_udp);
                                 udpClient.Send(sendBytes_5, sendBytes_5.Length, IP_udp, Port_udp);
+                                udpClient.Send(sendBytes_6, sendBytes_6.Length, IP_udp, Port_udp);
                             }
                             catch (Exception e)
                             {
